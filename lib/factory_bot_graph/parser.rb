@@ -105,13 +105,24 @@ module FactoryBotGraph
         next if seen[key]
 
         seen[key] = true
-        add_edge(source, target, "implicit association", trait, file, line)
+        add_edge(source, target, "association", trait, file, line)
       end
-      @edges.uniq!
+      deduplicate_edges
     end
 
     def add_edge(source, target, kind, trait, file, line)
       @edges << Edge.new(source, target, kind, trait, file, line)
+    end
+
+    def deduplicate_edges
+      seen = {}
+      @edges = @edges.each_with_object([]) do |edge, deduplicated|
+        key = [edge.source, edge.target, edge.kind, edge.trait]
+        next if seen[key]
+
+        seen[key] = true
+        deduplicated << edge
+      end
     end
 
     def bare_call?(node)

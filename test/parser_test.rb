@@ -13,24 +13,24 @@ class ParserTest < Minitest::Test
     assert_equal %w[account author comment post], @parser.factories.keys.sort
   end
 
-  def test_finds_explicit_implicit_trait_and_parent_relations
+  def test_finds_association_trait_and_parent_relations
     relations = @parser.edges.map { |edge| [edge.source, edge.target, edge.kind, edge.trait] }
 
     assert_includes relations, ["author", "account", "parent", nil]
     assert_includes relations, ["post", "author", "association", nil]
-    assert_includes relations, ["post", "account", "implicit association", nil]
+    assert_includes relations, ["post", "account", "association", nil]
     assert_includes relations, ["post", "comment", "create_list", "with_comments"]
     assert_includes relations, ["comment", "post", "association", nil]
   end
 
-  def test_deduplicates_implicit_associations_between_the_same_factories
-    implicit_relations = @parser.edges.select do |edge|
+  def test_deduplicates_associations_between_the_same_factories
+    association_relations = @parser.edges.select do |edge|
       edge.source == "post" &&
         edge.target == "account" &&
-        edge.kind == "implicit association" &&
+        edge.kind == "association" &&
         edge.trait.nil?
     end
 
-    assert_equal 1, implicit_relations.size
+    assert_equal 1, association_relations.size
   end
 end

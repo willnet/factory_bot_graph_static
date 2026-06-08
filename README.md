@@ -58,7 +58,7 @@ bundle exec factory_bot_graph --traits
 
 - `association :account`
 - `association :writer, factory: :author`
-- Implicit associations such as `account`
+- Implicit associations such as `account`, rendered as `association`
 - `create`, `create_list`, `build`, `build_list`, `build_stubbed`,
   `attributes_for`, and their list variants
 - `association_list`

@@ -9,7 +9,7 @@ module FactoryBotGraph
       @edges = edges
     end
 
-    def render(format:, root: nil, include_traits: true)
+    def render(format:, root: nil, include_traits: false)
       edges = selected_edges(root, include_traits)
       nodes = selected_nodes(root, edges)
 

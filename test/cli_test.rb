@@ -27,6 +27,28 @@ class CLITest < Minitest::Test
     assert_includes stderr.string, "Factory not found: missing"
   end
 
+  def test_omits_trait_relations_by_default
+    stdout = StringIO.new
+    stderr = StringIO.new
+
+    status = FactoryBotGraph::CLI.new(stdout:, stderr:).run([FIXTURE])
+
+    assert_equal 0, status
+    refute_includes stdout.string, "trait: with_comments"
+    assert_empty stderr.string
+  end
+
+  def test_can_include_trait_relations
+    stdout = StringIO.new
+    stderr = StringIO.new
+
+    status = FactoryBotGraph::CLI.new(stdout:, stderr:).run(["--traits", FIXTURE])
+
+    assert_equal 0, status
+    assert_includes stdout.string, "trait: with_comments"
+    assert_empty stderr.string
+  end
+
   def test_uses_spec_factories_by_default
     stdout = StringIO.new
     stderr = StringIO.new

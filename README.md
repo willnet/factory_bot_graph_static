@@ -47,10 +47,11 @@ To focus on everything reachable from one factory:
 bundle exec factory_bot_graph --factory post
 ```
 
-To omit relationships that only appear when traits are selected:
+By default, relationships that only appear when traits are selected are omitted.
+To include them:
 
 ```sh
-bundle exec factory_bot_graph --no-traits
+bundle exec factory_bot_graph --traits
 ```
 
 ## Detected relationships
@@ -62,7 +63,8 @@ bundle exec factory_bot_graph --no-traits
   `attributes_for`, and their list variants
 - `association_list`
 - Factory inheritance such as `factory :admin, parent: :user`
-- Relationships declared inside traits, labeled with the trait name
+- Relationships declared inside traits, labeled with the trait name, when
+  `--traits` is passed
 
 This is intentionally a static analyzer. Dynamic factory names and associations
 hidden inside application helper methods cannot be inferred reliably and are

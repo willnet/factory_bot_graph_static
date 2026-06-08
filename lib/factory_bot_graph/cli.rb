@@ -12,7 +12,7 @@ module FactoryBotGraph
     end
 
     def run(argv)
-      options = { format: "mermaid", include_traits: true }
+      options = { format: "mermaid", include_traits: false }
       parser = option_parser(options)
       paths = parser.parse(argv)
       files = ruby_files(paths.empty? ? DEFAULT_PATHS : paths)
@@ -34,7 +34,7 @@ module FactoryBotGraph
         opts.banner = "Usage: factory_bot_graph [options] [file_or_directory ...]"
         opts.on("-f", "--format FORMAT", %w[mermaid dot], "Output format: mermaid or dot") { |value| options[:format] = value }
         opts.on("-r", "--factory NAME", "Only render dependencies reachable from a factory") { |value| options[:root] = value }
-        opts.on("--[no-]traits", "Include relationships declared in traits (default: true)") { |value| options[:include_traits] = value }
+        opts.on("--[no-]traits", "Include relationships declared in traits (default: false)") { |value| options[:include_traits] = value }
         opts.on("-h", "--help", "Show this help") do
           @stdout.puts(opts)
           exit 0

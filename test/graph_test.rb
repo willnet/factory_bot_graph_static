@@ -15,6 +15,12 @@ class GraphTest < Minitest::Test
 
     assert_includes output, "flowchart LR"
     assert_includes output, 'factory_post -->|"association"| factory_author'
+    refute_includes output, 'factory_post -->|"create_list (trait: with_comments)"| factory_comment'
+  end
+
+  def test_can_include_trait_relations
+    output = @graph.render(format: "mermaid", include_traits: true)
+
     assert_includes output, 'factory_post -->|"create_list (trait: with_comments)"| factory_comment'
   end
 

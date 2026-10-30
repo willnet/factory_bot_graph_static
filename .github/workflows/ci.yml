@@ -32,3 +32,16 @@ jobs:
 
       - name: Run tests
         run: bundle exec ruby -Ilib:test -e 'Dir["test/**/*_test.rb"].sort.each { |file| require File.expand_path(file) }'
+
+  test-success:
+    name: All tests passed
+    needs: [test]
+    # Always finish this required check, including when a dependency fails or skips.
+    if: ${{ always() }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 1
+    steps:
+      - name: Verify required CI results
+        env:
+          NEEDS_JSON: ${{ toJSON(needs) }}
+        run: jq -e 'all(.[]; .result == "success")' <<< "$NEEDS_JSON"
